@@ -40,6 +40,7 @@ EXPOSE 8000 8500
 # 6. Start Backend and Frontend
 # ==========================
 # Runs backend on port 8000 and frontend (e.g. Streamlit) on port 8500
-CMD ["/bin/bash", "-c", "python backend/dti_backend.py & python frontend/Home.py"]
+CMD ["/bin/bash", "-c", "python Backend/dti_backend.py & python Frontend/Home.py --server.port=8500 --server.address=0.0.0.0"]
+
 
 
