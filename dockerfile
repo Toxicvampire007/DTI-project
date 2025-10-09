@@ -28,8 +28,8 @@ RUN pip install --upgrade pip && \
 # ==========================
 # 4. Copy Source Code
 # ==========================
-COPY backend /app/Backend
-COPY frontend /app/Frontend
+COPY Backend /app/Backend
+COPY Frontend /app/Frontend
 
 # ==========================
 # 5. Expose Ports
@@ -41,4 +41,5 @@ EXPOSE 8000 8500
 # ==========================
 # Runs backend on port 8000 and frontend (e.g. Streamlit) on port 8500
 CMD ["/bin/bash", "-c", "python backend/dti_backend.py & python frontend/Home.py"]
+
 
