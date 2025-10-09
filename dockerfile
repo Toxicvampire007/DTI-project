@@ -19,29 +19,25 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # ==========================
-# 3. Copy and Install Backend Dependencies
+# 3. Install Python Dependencies
 # ==========================
-COPY backend/requirements.txt /app/backend/requirements.txt
-RUN pip install --upgrade pip && pip install -r /app/backend/requirements.txt
+# Add all packages you actually use below
+RUN pip install --upgrade pip && \
+    pip install deeppurpose torch torchvision torchaudio numpy pandas scikit-learn matplotlib seaborn flask streamlit
 
 # ==========================
-# 4. Copy and Install Frontend Dependencies
-# ==========================
-COPY frontend/requirements.txt /app/frontend/requirements.txt
-RUN pip install -r /app/frontend/requirements.txt
-
-# ==========================
-# 5. Copy Source Code
+# 4. Copy Source Code
 # ==========================
 COPY backend /app/backend
 COPY frontend /app/frontend
 
 # ==========================
-# 6. Expose Port and Define Startup Command
+# 5. Expose Ports
 # ==========================
-# Example: Backend runs on 8000, frontend on 8500
 EXPOSE 8000 8500
 
-# Modify this depending on how you start the app
-# (e.g. FastAPI for backend, Streamlit/Flask for frontend)
+# ==========================
+# 6. Start Backend and Frontend
+# ==========================
+# Runs backend on port 8000 and frontend (e.g. Streamlit) on port 8500
 CMD ["/bin/bash", "-c", "python backend/dti_backend.py & python frontend/Home.py"]
