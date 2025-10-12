@@ -26,13 +26,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # 3. Install Python Dependencies
 # ==========================
 RUN pip install --upgrade pip && \
-    pip install deeppurpose torch torchvision torchaudio numpy pandas scikit-learn matplotlib seaborn flask streamlit nest_asyncio rdkit git+https://github.com/bp-kelley/descriptastorus pandas-flavor
+    pip install deeppurpose torch torchvision torchaudio numpy pandas scikit-learn matplotlib seaborn flask streamlit nest_asyncio rdkit git+https://github.com/bp-kelley/descriptastorus pandas-flavor py3Dmol
 
 # ==========================
 # 4. Copy Source Code
 # ==========================
 COPY Backend /app/Backend
 COPY Frontend /app/Frontend
+COPY Dataset.csv /app/Dataset.csv
 
 # ==========================
 # 5. Expose Ports
@@ -43,4 +44,5 @@ EXPOSE 8000 8500
 # 6. Start Backend and Frontend
 # ==========================
 CMD ["/bin/bash", "-c", "python Backend/dti_backend.py & python Frontend/Home.py --server.port=8500 --server.address=0.0.0.0"]
+
 
