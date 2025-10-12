@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxrender1 \
     libxext6 \
     libsm6 \
-    libgl1-mesa-glx \
+    libgl1 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # ==========================
@@ -43,3 +43,4 @@ EXPOSE 8000 8500
 # 6. Start Backend and Frontend
 # ==========================
 CMD ["/bin/bash", "-c", "python Backend/dti_backend.py & python Frontend/Home.py --server.port=8500 --server.address=0.0.0.0"]
+
