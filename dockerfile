@@ -16,12 +16,15 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     git \
-    && rm -rf /var/lib/apt/lists/*
+    libxrender1 \
+    libxext6 \
+    libsm6 \
+    libgl1-mesa-glx \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # ==========================
 # 3. Install Python Dependencies
 # ==========================
-# Add all packages you actually use below
 RUN pip install --upgrade pip && \
     pip install deeppurpose torch torchvision torchaudio numpy pandas scikit-learn matplotlib seaborn flask streamlit nest_asyncio rdkit git+https://github.com/bp-kelley/descriptastorus pandas-flavor
 
@@ -39,10 +42,4 @@ EXPOSE 8000 8500
 # ==========================
 # 6. Start Backend and Frontend
 # ==========================
-# Runs backend on port 8000 and frontend (e.g. Streamlit) on port 8500
 CMD ["/bin/bash", "-c", "python Backend/dti_backend.py & python Frontend/Home.py --server.port=8500 --server.address=0.0.0.0"]
-
-
-
-
-
