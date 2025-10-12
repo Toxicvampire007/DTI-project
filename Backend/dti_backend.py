@@ -141,10 +141,11 @@ class DTIHyperparameterTuner:
         print("📁 Results saved to 'enhanced_tuning_results.json'")
 
 def main():
-    tuner = DTIHyperparameterTuner("D:/Combined Project/dataset.csv")
+    tuner = DTIHyperparameterTuner("Dataset.csv")
     tuner.load_and_preprocess_data()
     tuner.smart_grid_search(max_trials=50)
     tuner.generate_report()
 
 if __name__ == "__main__":
     main()
+
