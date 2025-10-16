@@ -22,7 +22,7 @@ logging.basicConfig(
 
 class DTIHyperparameterTuner:
     def __init__(self, data_path):
-        self.data_path = data_path
+        self.data_path = "Dataset.csv"
         self.best_config = None
         self.best_score = -np.inf
         self.results = []
@@ -148,4 +148,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
