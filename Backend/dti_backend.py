@@ -10,6 +10,7 @@ from scipy.stats import pearsonr
 from lifelines.utils import concordance_index
 import itertools
 import json
+import os  # ✅ Added for path handling
 
 logging.basicConfig(
     level=logging.INFO,
@@ -21,8 +22,14 @@ logging.basicConfig(
 )
 
 class DTIHyperparameterTuner:
-    def __init__(self, data_path):
-        self.data_path = "Dataset.csv"
+    def __init__(self, data_path=None):
+        # ✅ Always resolve Dataset.csv inside Backend folder
+        backend_dir = os.path.dirname(os.path.abspath(__file__))
+        if data_path is None:
+            self.data_path = os.path.join(backend_dir, "Dataset.csv")
+        else:
+            self.data_path = os.path.abspath(data_path)
+
         self.best_config = None
         self.best_score = -np.inf
         self.results = []
@@ -30,6 +37,15 @@ class DTIHyperparameterTuner:
 
     def load_and_preprocess_data(self):
         logging.info("Loading and preprocessing dataset...")
+        logging.info(f"Looking for dataset at: {self.data_path}")
+
+        # ✅ File existence check
+        if not os.path.exists(self.data_path):
+            raise FileNotFoundError(
+                f"❌ Dataset not found at {self.data_path}. "
+                "Please ensure the file is located in the Backend folder."
+            )
+
         df = pd.read_csv(self.data_path)
 
         # Remove negative values for log1p
@@ -61,6 +77,8 @@ class DTIHyperparameterTuner:
 
         self.train, self.val, self.test = X
         logging.info(f"Data processed: Train={len(self.train)}, Val={len(self.val)}, Test={len(self.test)}")
+
+    # --- rest of your code remains unchanged ---
 
     def define_hyperparameter_grid(self):
         return {
@@ -141,12 +159,10 @@ class DTIHyperparameterTuner:
         print("📁 Results saved to 'enhanced_tuning_results.json'")
 
 def main():
-    tuner = DTIHyperparameterTuner("Dataset.csv")
+    tuner = DTIHyperparameterTuner()  # ✅ No need to pass path manually
     tuner.load_and_preprocess_data()
     tuner.smart_grid_search(max_trials=50)
     tuner.generate_report()
 
 if __name__ == "__main__":
     main()
-
-
