@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # ==========================
 # This layer rarely changes — ensures faster rebuilds
 RUN pip install --upgrade pip && \
-    pip install torch torchvision torchaudio numpy pandas scikit-learn matplotlib seaborn flask streamlit rdkit git+https://github.com/bp-kelley/descriptastorus pandas-flavor 
+    pip install torch torchvision torchaudio torchdata numpy pandas scikit-learn matplotlib seaborn flask streamlit rdkit git+https://github.com/bp-kelley/descriptastorus pandas-flavor 
 
 # ==========================
 # 5. Install DeepPurpose + DGL (Graph support)
@@ -51,4 +51,3 @@ EXPOSE 8000 8500
 # Backend (Flask) -> port 8000
 # Frontend (Streamlit) -> port 8500
 CMD ["/bin/bash", "-c", "python Backend/dti_backend.py & streamlit run Frontend/Home.py --server.port=8500 --server.address=0.0.0.0"]
-
