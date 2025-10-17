@@ -22,32 +22,40 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # ==========================
-# 4. Preinstall Core Libraries (Layer caching optimization)
+# 4. Install Python Packages & Clean Cache
 # ==========================
-# This layer rarely changes — ensures faster rebuilds
 RUN pip install --upgrade pip && \
-    pip install torch==2.0.1 torchvision torchaudio torchdata==0.6.1 numpy pandas scikit-learn matplotlib seaborn flask streamlit rdkit git+https://github.com/bp-kelley/descriptastorus pandas-flavor
-# ==========================
-# 5. Install DeepPurpose + DGL (Graph support)
-# ==========================
-RUN pip install deeppurpose && \
-    pip install dgl -f https://data.dgl.ai/wheels/torch-2.0/repo.html
+    pip install \
+        torch==2.0.1 \
+        torchvision \
+        torchaudio \
+        torchdata==0.6.1 \
+        numpy \
+        pandas \
+        scikit-learn \
+        matplotlib \
+        seaborn \
+        flask \
+        streamlit \
+        rdkit \
+        git+https://github.com/bp-kelley/descriptastorus \
+        pandas-flavor \
+        deeppurpose \
+        dgl -f https://data.dgl.ai/wheels/torch-2.0/repo.html && \
+    pip cache purge  # ✅ Clear pip cache to save space
 
 # ==========================
-# 6. Copy Source Code
+# 5. Copy Source Code
 # ==========================
 COPY Backend /app/Backend
 COPY Frontend /app/Frontend
 
 # ==========================
-# 7. Expose Ports
+# 6. Expose Ports
 # ==========================
 EXPOSE 8000 8500
 
 # ==========================
-# 8. Start Backend & Frontend
+# 7. Start Backend & Frontend
 # ==========================
-# Backend (Flask) -> port 8000
-# Frontend (Streamlit) -> port 8500
 CMD ["/bin/bash", "-c", "python Backend/dti_backend.py & streamlit run Frontend/Home.py --server.port=8500 --server.address=0.0.0.0"]
-
